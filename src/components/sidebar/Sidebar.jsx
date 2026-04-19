@@ -19,7 +19,6 @@ export default function Sidebar() {
               <label className="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
-                  checked
                   className="w-4 h-4 text-rose-500 rounded border-slate-300"
                 />
                 <span className="ml-3 text-sm text-slate-700">
@@ -73,7 +72,6 @@ export default function Sidebar() {
                 <input
                   type="checkbox"
                   name="price"
-                  checked
                   className="w-4 h-4 text-rose-500"
                 />
                 <span className="ml-3 text-sm text-slate-700">$5000+</span>
@@ -88,7 +86,6 @@ export default function Sidebar() {
               <label className="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
-                  checked
                   className="w-4 h-4 text-rose-500 rounded border-slate-300"
                 />
                 <span className="ml-3 text-sm text-slate-700">4.5 ⭐ & up</span>

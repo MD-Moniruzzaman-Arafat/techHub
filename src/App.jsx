@@ -3,8 +3,11 @@ import Hero from './components/hero/Hero';
 import Navbar from './components/navbar/Navbar';
 import Products from './components/products/Products';
 import Sidebar from './components/sidebar/Sidebar';
+import useProducts from './hook/useProducts';
 
 function App() {
+  const { products } = useProducts();
+  console.log(products);
   return (
     <>
       <Navbar />
