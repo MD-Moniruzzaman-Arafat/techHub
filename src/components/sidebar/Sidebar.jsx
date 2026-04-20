@@ -3,18 +3,33 @@ import useProducts from '../../hook/useProducts';
 
 export default function Sidebar() {
   const [categories, setCategories] = useState([]);
-  const { category, setCategory } = useProducts([]);
+  const { category, setCategory, price, setPrice } = useProducts([]);
   useEffect(() => {
     const loadCategory = async () => {
       const res = await fetch(`http://localhost:9000/categories`);
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       setCategories(data?.data);
     };
     loadCategory();
   }, []);
 
-  const handleCheckbox = (e) => {
+  const priceRange = [
+    {
+      low: 0,
+      high: 2000,
+    },
+    {
+      low: 2000,
+      high: 5000,
+    },
+    {
+      low: 5000,
+      high: '',
+    },
+  ];
+
+  const handleCategory = (e) => {
     const { value, checked } = e.target;
 
     if (checked) {
@@ -23,7 +38,16 @@ export default function Sidebar() {
       setCategory('');
     }
   };
-  console.log(category);
+  const handlePrice = (e) => {
+    const { value, checked } = e.target;
+    console.log(value);
+    const [low, high] = value.split(',');
+    if (checked) {
+      setPrice({ low: Number(low), high: high ? Number(high) : '' });
+    } else {
+      setPrice({ low: '', high: '' });
+    }
+  };
   return (
     <>
       <div className="md:col-span-1 space-y-4">
@@ -46,7 +70,7 @@ export default function Sidebar() {
                   <input
                     checked={c.name === category}
                     value={c.name}
-                    onChange={handleCheckbox}
+                    onChange={handleCategory}
                     type="checkbox"
                     className="w-4 h-4 text-rose-500 rounded border-slate-300"
                   />
@@ -64,6 +88,12 @@ export default function Sidebar() {
             <div className="space-y-2">
               <label className="flex items-center cursor-pointer">
                 <input
+                  checked={
+                    price.low === priceRange[0].low &&
+                    price.high === priceRange[0].high
+                  }
+                  onChange={handlePrice}
+                  value={`${priceRange[0].low},${priceRange[0].high}`}
                   type="checkbox"
                   name="price"
                   className="w-4 h-4 text-rose-500"
@@ -72,6 +102,12 @@ export default function Sidebar() {
               </label>
               <label className="flex items-center cursor-pointer">
                 <input
+                  checked={
+                    price.low === priceRange[1].low &&
+                    price.high === priceRange[1].high
+                  }
+                  onChange={handlePrice}
+                  value={`${priceRange[1].low},${priceRange[1].high}`}
                   type="checkbox"
                   name="price"
                   className="w-4 h-4 text-rose-500"
@@ -82,6 +118,12 @@ export default function Sidebar() {
               </label>
               <label className="flex items-center cursor-pointer">
                 <input
+                  checked={
+                    price.low === priceRange[2].low &&
+                    price.high === priceRange[2].high
+                  }
+                  onChange={handlePrice}
+                  value={`${priceRange[2].low},${priceRange[2].high}`}
                   type="checkbox"
                   name="price"
                   className="w-4 h-4 text-rose-500"

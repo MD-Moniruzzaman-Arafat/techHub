@@ -7,7 +7,7 @@ import useProducts from './hook/useProducts';
 
 function App() {
   const { products } = useProducts();
-  console.log(products);
+  // console.log(products);
   return (
     <>
       <Navbar />
