@@ -1,4 +1,29 @@
+import { useEffect, useState } from 'react';
+import useProducts from '../../hook/useProducts';
+
 export default function Sidebar() {
+  const [categories, setCategories] = useState([]);
+  const { category, setCategory } = useProducts([]);
+  useEffect(() => {
+    const loadCategory = async () => {
+      const res = await fetch(`http://localhost:9000/categories`);
+      const data = await res.json();
+      console.log(data);
+      setCategories(data?.data);
+    };
+    loadCategory();
+  }, []);
+
+  const handleCheckbox = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      setCategory(value);
+    } else {
+      setCategory('');
+    }
+  };
+  console.log(category);
   return (
     <>
       <div className="md:col-span-1 space-y-4">
@@ -16,31 +41,18 @@ export default function Sidebar() {
               Category
             </h4>
             <div className="space-y-2">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-rose-500 rounded border-slate-300"
-                />
-                <span className="ml-3 text-sm text-slate-700">
-                  Apple Mac Pro
-                </span>
-              </label>
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-rose-500 rounded border-slate-300"
-                />
-                <span className="ml-3 text-sm text-slate-700">
-                  Gaming Laptop
-                </span>
-              </label>
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-rose-500 rounded border-slate-300"
-                />
-                <span className="ml-3 text-sm text-slate-700">Workstation</span>
-              </label>
+              {categories?.map((c) => (
+                <label key={c.id} className="flex items-center cursor-pointer">
+                  <input
+                    checked={c.name === category}
+                    value={c.name}
+                    onChange={handleCheckbox}
+                    type="checkbox"
+                    className="w-4 h-4 text-rose-500 rounded border-slate-300"
+                  />
+                  <span className="ml-3 text-sm text-slate-700">{c.name}</span>
+                </label>
+              ))}
             </div>
           </div>
 
