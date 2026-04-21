@@ -1,4 +1,8 @@
+import useCart from '../../hook/useCart';
+
 export default function Navbar() {
+  const { cart } = useCart();
+  console.log(cart);
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
@@ -70,7 +74,7 @@ export default function Navbar() {
               </svg>
               <span className="text-sm font-semibold text-slate-900">Cart</span>
               <span className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center shadow">
-                3
+                {cart.count}
               </span>
             </a>
           </div>

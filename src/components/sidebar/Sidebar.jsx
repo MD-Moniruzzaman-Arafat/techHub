@@ -3,7 +3,8 @@ import useProducts from '../../hook/useProducts';
 
 export default function Sidebar() {
   const [categories, setCategories] = useState([]);
-  const { category, setCategory, price, setPrice } = useProducts([]);
+  const { category, setCategory, price, setPrice, rating, setRating } =
+    useProducts();
   useEffect(() => {
     const loadCategory = async () => {
       const res = await fetch(`http://localhost:9000/categories`);
@@ -46,6 +47,14 @@ export default function Sidebar() {
       setPrice({ low: Number(low), high: high ? Number(high) : '' });
     } else {
       setPrice({ low: '', high: '' });
+    }
+  };
+  const handleRating = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setRating(value);
+    } else {
+      setPrice('');
     }
   };
   return (
@@ -139,6 +148,9 @@ export default function Sidebar() {
             <div className="space-y-2">
               <label className="flex items-center cursor-pointer">
                 <input
+                  checked={rating === '4.5'}
+                  onChange={handleRating}
+                  value={'4.5'}
                   type="checkbox"
                   className="w-4 h-4 text-rose-500 rounded border-slate-300"
                 />
@@ -146,6 +158,9 @@ export default function Sidebar() {
               </label>
               <label className="flex items-center cursor-pointer">
                 <input
+                  checked={rating === '4.0'}
+                  onChange={handleRating}
+                  value={'4.0'}
                   type="checkbox"
                   className="w-4 h-4 text-rose-500 rounded border-slate-300"
                 />
@@ -153,6 +168,9 @@ export default function Sidebar() {
               </label>
               <label className="flex items-center cursor-pointer">
                 <input
+                  checked={rating === '3.5'}
+                  onChange={handleRating}
+                  value={'3.5'}
                   type="checkbox"
                   className="w-4 h-4 text-rose-500 rounded border-slate-300"
                 />

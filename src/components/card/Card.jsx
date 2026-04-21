@@ -1,10 +1,58 @@
+import { useState } from 'react';
+import useCart from '../../hook/useCart';
+
 export default function Card({ product }) {
+  //   console.log(product);
+  const [btnToggle, setBtnToggle] = useState(false);
+  const { cart, setCart } = useCart();
+  const handleAddToCart = async (data) => {
+    const cartData = {
+      id: data.id,
+      productId: data.id,
+      quantity: 1,
+      product: {
+        data,
+      },
+    };
+    await fetch(`http://localhost:9000/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cartData),
+    });
+    const res = await fetch(`http://localhost:9000/cart`);
+    const c = await res.json();
+    setCart(c);
+    setBtnToggle(true);
+  };
+  const cartItem = cart?.data?.find((item) => item.productId === product.id);
+  console.log(cartItem);
+  const handleDelete = async (id) => {
+    await fetch(`http://localhost:9000/cart/${id}`, {
+      method: 'DELETE',
+    });
+    const res = await fetch(`http://localhost:9000/cart`);
+    const c = await res.json();
+    setCart(c);
+    setBtnToggle(false);
+
+    // loadCart(); // আবার cart fetch করো
+  };
+  //   useEffect(() => {
+  //     const fetchCartData = async () => {
+  //       const res = await fetch(`http://localhost:9000/cart`);
+  //       const data = await res.json();
+  //       setCart(data.data);
+  //     };
+  //     fetchCartData();
+  //   }, [setCart]);
   return (
     <>
       <div className="soft-card overflow-hidden hover:-translate-y-1 transition-all">
         <div className="aspect-square bg-linear-to-br from-slate-100 via-white to-rose-50 flex items-center justify-center">
           <img
-            src={product?.image}
+            src={`http://localhost:9000/${product?.image}`}
             alt="Ultrabook"
             className="w-full h-full object-cover"
           />
@@ -47,9 +95,21 @@ export default function Card({ product }) {
               In Stock ({product?.stock})
             </span>
           </div>
-          <button className="w-full button-primary py-2.5 rounded-lg font-semibold">
-            Add to Cart
-          </button>
+          {!btnToggle ? (
+            <button
+              onClick={() => handleAddToCart(product)}
+              className="w-full button-primary py-2.5 rounded-lg font-semibold"
+            >
+              Add to Cart
+            </button>
+          ) : (
+            <button
+              onClick={() => handleDelete(cartItem?.id)}
+              className="w-full button-primary py-2.5 rounded-lg font-semibold"
+            >
+              Remove to Cart
+            </button>
+          )}
         </div>
       </div>
     </>
