@@ -54,7 +54,7 @@ export default function Sidebar() {
     if (checked) {
       setRating(value);
     } else {
-      setPrice('');
+      setRating('');
     }
   };
   return (

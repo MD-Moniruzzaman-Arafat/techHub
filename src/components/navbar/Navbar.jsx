@@ -1,7 +1,9 @@
 import useCart from '../../hook/useCart';
+import useProducts from '../../hook/useProducts';
 
 export default function Navbar() {
   const { cart, setCartBtn } = useCart();
+  const { search, setSearch } = useProducts();
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
@@ -51,6 +53,8 @@ export default function Navbar() {
                   <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
                 </svg>
                 <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   type="text"
                   placeholder="Search laptops, GPUs, desktops..."
                   className="bg-transparent text-sm placeholder:text-slate-400 focus:outline-none w-64"

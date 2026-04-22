@@ -3,6 +3,7 @@ import { ProductsContext } from '../context';
 
 export default function ProductsProvider({ children }) {
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [rating, setRating] = useState('');
   const [price, setPrice] = useState({
@@ -12,14 +13,18 @@ export default function ProductsProvider({ children }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(
-        `http://localhost:9000/products/filter?category=${category}&minPrice=${price.low}&maxPrice=${price.high}&minRating=${rating}`
-      );
+      let url = '';
+      if (search) {
+        url = `http://localhost:9000/products/search?q=${search}&category=${category}&minPrice=${price.low}&maxPrice=${price.high}&minRating=${rating}`;
+      } else {
+        url = `http://localhost:9000/products/filter?category=${category}&minPrice=${price.low}&maxPrice=${price.high}&minRating=${rating}`;
+      }
+      const res = await fetch(url);
       const data = await res.json();
       setProducts(data);
     };
     fetchData();
-  }, [category, price.low, price.high, rating]);
+  }, [category, price.low, price.high, rating, search]);
   return (
     <>
       <ProductsContext.Provider
@@ -32,6 +37,8 @@ export default function ProductsProvider({ children }) {
           setPrice,
           rating,
           setRating,
+          search,
+          setSearch,
         }}
       >
         {children}

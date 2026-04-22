@@ -5,23 +5,25 @@ export default function CartItem({ item }) {
   const [count, setCount] = useState(item?.quantity);
   const { setCart } = useCart();
   const handleIncrement = async () => {
-    const newQty = count + 1;
+    if (item.product.stock > count) {
+      const newQty = count + 1;
 
-    setCount(newQty); // UI instantly update
+      setCount(newQty); // UI instantly update
 
-    await fetch(`http://localhost:9000/cart/${item.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        quantity: newQty,
-      }),
-    });
+      await fetch(`http://localhost:9000/cart/${item.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quantity: newQty,
+        }),
+      });
 
-    const res = await fetch(`http://localhost:9000/cart`);
-    const data = await res.json();
-    setCart(data);
+      const res = await fetch(`http://localhost:9000/cart`);
+      const data = await res.json();
+      setCart(data);
+    }
   };
   const handleDecrement = async () => {
     if (count > 1) {
@@ -51,7 +53,6 @@ export default function CartItem({ item }) {
     const c = await res.json();
     setCart(c);
   };
-  console.log(item);
   return (
     <>
       <div className="soft-card p-4 flex gap-4">
