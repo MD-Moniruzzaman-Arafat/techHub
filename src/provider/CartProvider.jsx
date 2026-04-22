@@ -3,6 +3,7 @@ import { CartContext } from '../context';
 
 export default function CartProvider({ children }) {
   const [cart, setCart] = useState({});
+  const [cartBtn, setCartBtn] = useState(false);
   useEffect(() => {
     const fetchCartData = async () => {
       const res = await fetch(`http://localhost:9000/cart`);
@@ -13,7 +14,7 @@ export default function CartProvider({ children }) {
   }, []);
   return (
     <>
-      <CartContext.Provider value={{ cart, setCart }}>
+      <CartContext.Provider value={{ cart, setCart, cartBtn, setCartBtn }}>
         {children}
       </CartContext.Provider>
     </>

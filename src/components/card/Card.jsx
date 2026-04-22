@@ -1,9 +1,7 @@
-import { useState } from 'react';
 import useCart from '../../hook/useCart';
 
-export default function Card({ product }) {
+function Card({ product }) {
   //   console.log(product);
-  const [btnToggle, setBtnToggle] = useState(false);
   const { cart, setCart } = useCart();
   const handleAddToCart = async (data) => {
     const cartData = {
@@ -24,10 +22,8 @@ export default function Card({ product }) {
     const res = await fetch(`http://localhost:9000/cart`);
     const c = await res.json();
     setCart(c);
-    setBtnToggle(true);
   };
   const cartItem = cart?.data?.find((item) => item.productId === product.id);
-  console.log(cartItem);
   const handleDelete = async (id) => {
     await fetch(`http://localhost:9000/cart/${id}`, {
       method: 'DELETE',
@@ -35,18 +31,8 @@ export default function Card({ product }) {
     const res = await fetch(`http://localhost:9000/cart`);
     const c = await res.json();
     setCart(c);
-    setBtnToggle(false);
-
-    // loadCart(); // আবার cart fetch করো
   };
-  //   useEffect(() => {
-  //     const fetchCartData = async () => {
-  //       const res = await fetch(`http://localhost:9000/cart`);
-  //       const data = await res.json();
-  //       setCart(data.data);
-  //     };
-  //     fetchCartData();
-  //   }, [setCart]);
+
   return (
     <>
       <div className="soft-card overflow-hidden hover:-translate-y-1 transition-all">
@@ -95,7 +81,7 @@ export default function Card({ product }) {
               In Stock ({product?.stock})
             </span>
           </div>
-          {!btnToggle ? (
+          {!cartItem ? (
             <button
               onClick={() => handleAddToCart(product)}
               className="w-full button-primary py-2.5 rounded-lg font-semibold"
@@ -115,3 +101,5 @@ export default function Card({ product }) {
     </>
   );
 }
+
+export default Card;

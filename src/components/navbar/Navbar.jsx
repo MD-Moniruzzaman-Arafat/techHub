@@ -1,13 +1,15 @@
 import useCart from '../../hook/useCart';
 
 export default function Navbar() {
-  const { cart } = useCart();
-  console.log(cart);
+  const { cart, setCartBtn } = useCart();
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div
+            onClick={() => setCartBtn(false)}
+            className="flex items-center gap-4"
+          >
             <div className="h-10 w-10 rounded-full bg-linear-to-br from-rose-400 to-orange-300 flex items-center justify-center text-white font-bold">
               TH
             </div>
@@ -56,7 +58,7 @@ export default function Navbar() {
               </div>
             </div>
             <a
-              href="cart.html"
+              onClick={() => setCartBtn(true)}
               className="relative flex items-center gap-2 px-3 py-2 rounded-full border border-slate-200 bg-white shadow-sm hover:border-rose-300"
             >
               <svg
